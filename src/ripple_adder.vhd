@@ -16,9 +16,17 @@ end ripple_adder;
 architecture Behavioral of ripple_adder is
 
     -- Declare components here
-    
+    component full_adder is
+     port (
+        A : in std_logic;
+        B : in std_logic ;
+        Cin : in std_logic;
+        S : out std_logic;
+        Cout : out std_logic
+        );
+        end component full_adder;
     -- Declare signals here
-
+signal w_carry : STD_LOGIC_VECTOR(0 to 0);
 begin
 
 
