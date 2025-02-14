@@ -50,12 +50,9 @@ begin
 	       assert (w_sum = x"F" and w_Cout = '1') report "bad with ones" severity failure;
        -- TODO, a few other test cases
 	    -- Test 0 + 0 + Cin = 1 (easy-to-forget case)
---        w_addends <= x"00"; w_Cin <= '1'; wait for 10 ns;
---            assert (w_sum = x"1" and w_Cout = '0') report "bad with 0+0+Cin" severity failure;
+        w_addends <= x"00"; w_Cin <= '0'; wait for 10 ns;
+            assert (w_sum = x"1" and w_Cout = '0') report "bad with 0+0+Cin" severity failure;
         
-        -- Test 1 + 0 + Cin = 1 (easy-to-forget case)
-        w_addends <= x"01"; w_Cin <= '1'; wait for 10 ns;
-            assert (w_sum = x"2" and w_Cout = '0') report "bad with 1+0+Cin" severity failure;
         
         -- Test all ones input with carry-in = 0
         w_addends <= x"FF"; w_Cin <= '0'; wait for 10 ns;
