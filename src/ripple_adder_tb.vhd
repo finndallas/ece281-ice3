@@ -49,8 +49,42 @@ begin
        w_addends <= x"FF"; w_Cin <= '1'; wait for 10 ns;
 	       assert (w_sum = x"F" and w_Cout = '1') report "bad with ones" severity failure;
        -- TODO, a few other test cases
-	
-		wait; -- wait forever
+	    -- Test 0 + 0 + Cin = 1 (easy-to-forget case)
+        w_addends <= x"00"; w_Cin <= '1'; wait for 10 ns;
+            assert (w_sum = x"1" and w_Cout = '0') report "bad with 0+0+Cin" severity failure;
+        
+        -- Test 1 + 0 + Cin = 1 (easy-to-forget case)
+        w_addends <= x"01"; w_Cin <= '1'; wait for 10 ns;
+            assert (w_sum = x"2" and w_Cout = '0') report "bad with 1+0+Cin" severity failure;
+        
+        -- Test all ones input with carry-in = 0
+        w_addends <= x"FF"; w_Cin <= '0'; wait for 10 ns;
+            assert (w_sum = x"FF" and w_Cout = '0') report "bad with all ones and Cin=0" severity failure;
+        
+        -- Test carry-out with carry-in = 1 (overflow case)
+        w_addends <= x"FF"; w_Cin <= '1'; wait for 10 ns;
+            assert (w_sum = x"1" and w_Cout = '1') report "bad with carry-out" severity failure;
+        
+        -- Test random case: mid-range values
+        w_addends <= x"3A"; w_Cin <= '0'; wait for 10 ns;
+            assert (w_sum = x"3A" and w_Cout = '0') report "bad with random case 1" severity failure;
+        
+        -- Test random case: mid-range values with carry-in
+        w_addends <= x"2F"; w_Cin <= '1'; wait for 10 ns;
+            assert (w_sum = x"30" and w_Cout = '0') report "bad with random case 2" severity failure;
+        
+        -- Test small sum without carry-out
+        w_addends <= x"01"; w_Cin <= '0'; wait for 10 ns;
+            assert (w_sum = x"01" and w_Cout = '0') report "bad with small sum" severity failure;
+        
+        -- Test near maximum value, but no carry-out
+        w_addends <= x"FE"; w_Cin <= '1'; wait for 10 ns;
+            assert (w_sum = x"FF" and w_Cout = '0') report "bad with near max value" severity failure;
+        
+        -- Test the minimum non-zero value with carry-out
+        w_addends <= x"01"; w_Cin <= '1'; wait for 10 ns;
+            assert (w_sum = x"2" and w_Cout = '0') report "bad with small sum" severity failure;
+                wait; -- wait forever
 	end process;	
 	-----------------------------------------------------	
 	
